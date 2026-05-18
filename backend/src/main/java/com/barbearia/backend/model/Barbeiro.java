@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "barbeiros")
-public class Barbeiro {
+public class Barbeiro extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +29,9 @@ public class Barbeiro {
 
     @Column(nullable = false)
     private String especialidade;
+
+    @Column(nullable = false)
+    private Boolean ativo = true;
 
     @OneToMany(mappedBy = "barbeiro", cascade = CascadeType.ALL)
     private List<Agendamento> agendamentos;
