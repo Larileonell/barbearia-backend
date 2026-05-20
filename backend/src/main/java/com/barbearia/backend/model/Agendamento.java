@@ -1,21 +1,19 @@
 package com.barbearia.backend.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "agendamentos")
-public class Agendamento {
+public class Agendamento extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,6 +23,11 @@ public class Agendamento {
 
     @Column(nullable = false)
     private LocalTime horario;
+
+
+    @Column(nullable = false)
+    private String observacao;
+
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -41,4 +44,6 @@ public class Agendamento {
     @ManyToOne
     @JoinColumn(name = "servico_id", nullable = false)
     private Servico servico;
+
+
 }
