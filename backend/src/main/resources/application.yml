@@ -22,5 +22,12 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
 
+spring doc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+    operations-sorter: method
+
 server:
   port: 8080

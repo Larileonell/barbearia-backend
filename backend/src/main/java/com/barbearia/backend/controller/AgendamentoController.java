@@ -2,7 +2,6 @@ package com.barbearia.backend.controller;
 
 import com.barbearia.backend.dto.request.AgendamentoRequest;
 import com.barbearia.backend.dto.response.AgendamentoResponse;
-import com.barbearia.backend.model.Agendamento;
 import com.barbearia.backend.service.AgendamentoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
