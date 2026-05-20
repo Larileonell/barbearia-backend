@@ -3,6 +3,11 @@ package com.barbearia.backend.controller;
 import com.barbearia.backend.dto.request.AgendamentoRequest;
 import com.barbearia.backend.dto.response.AgendamentoResponse;
 import com.barbearia.backend.service.AgendamentoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,45 +19,83 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/agendamentos")
 @RequiredArgsConstructor
+@Tag(name = "Agendamentos", description = "Gerenciamento de agendamentos da barbearia")
 public class AgendamentoController {
 
     private final AgendamentoService agendamentoService;
 
     @PostMapping
-    public ResponseEntity<AgendamentoResponse> criarAgendamento(
-            @RequestBody @Valid AgendamentoRequest agendamento) {
+    @Operation(summary = "Criar agendamento",
+            description = "Cria um novo agendamento validando disponibilidade do barbeiro")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Agendamento criado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos ou horário indisponível"),
+            @ApiResponse(responseCode = "404", description = "Barbeiro, cliente ou serviço não encontrado")
+    })
+    public ResponseEntity<AgendamentoResponse> criar(
+            @RequestBody @Valid AgendamentoRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(agendamentoService.criarAgendamento(agendamento));
+                .body(agendamentoService.criar(request));
     }
 
     @GetMapping
-    public ResponseEntity<List<AgendamentoResponse>> listarTodosAgendamentos() {
+    @Operation(summary = "Listar agendamentos",
+            description = "Retorna todos os agendamentos cadastrados")
+    @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+    public ResponseEntity<List<AgendamentoResponse>> listarTodos() {
         return ResponseEntity.ok(agendamentoService.listarTodos());
     }
 
     @GetMapping("/cliente/{clienteId}")
-    public ResponseEntity<List<AgendamentoResponse>> listarPorClienteId(
-            @PathVariable Long clienteId) {
-        return ResponseEntity.ok(agendamentoService.listarPorCliente(clienteId));
+    @Operation(summary = "Listar agendamentos por cliente",
+            description = "Retorna todos os agendamentos de um cliente específico")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
+    })
+    public ResponseEntity<List<AgendamentoResponse>> listarPorCliente(
+            @Parameter(description = "ID do cliente") @PathVariable Long clienteId) {
+        return ResponseEntity.ok(
+                agendamentoService.listarPorCliente(clienteId));
     }
 
     @GetMapping("/barbeiro/{barbeiroId}")
-    public ResponseEntity<List<AgendamentoResponse>> listarPorBarbeiroId(
-            @PathVariable Long barbeiroId) {
-        return ResponseEntity.ok(agendamentoService.listarPorCliente(barbeiroId));
+    @Operation(summary = "Listar agendamentos por barbeiro",
+            description = "Retorna todos os agendamentos de um barbeiro específico")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Barbeiro não encontrado")
+    })
+    public ResponseEntity<List<AgendamentoResponse>> listarPorBarbeiro(
+            @Parameter(description = "ID do barbeiro") @PathVariable Long barbeiroId) {
+        return ResponseEntity.ok(
+                agendamentoService.listarPorBarbeiro(barbeiroId));
     }
 
     @PatchMapping("/{id}/confirmar")
+    @Operation(summary = "Confirmar agendamento",
+            description = "Confirma um agendamento com status AGENDADO")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Agendamento confirmado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Agendamento não pode ser confirmado"),
+            @ApiResponse(responseCode = "404", description = "Agendamento não encontrado")
+    })
     public ResponseEntity<AgendamentoResponse> confirmar(
-            @PathVariable Long id) {
+            @Parameter(description = "ID do agendamento") @PathVariable Long id) {
         return ResponseEntity.ok(agendamentoService.confirmar(id));
     }
 
     @PatchMapping("/{id}/cancelar")
+    @Operation(summary = "Cancelar agendamento",
+            description = "Cancela um agendamento que ainda não foi cancelado")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Agendamento cancelado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Agendamento já está cancelado"),
+            @ApiResponse(responseCode = "404", description = "Agendamento não encontrado")
+    })
     public ResponseEntity<AgendamentoResponse> cancelar(
-            @PathVariable Long id) {
+            @Parameter(description = "ID do agendamento") @PathVariable Long id) {
         return ResponseEntity.ok(agendamentoService.cancelar(id));
     }
-
 }

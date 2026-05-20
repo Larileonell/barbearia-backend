@@ -17,7 +17,7 @@ public class OpenApiConfig {
                         .description("API para gerenciamento de agendamentos de barbearia")
                         .version("v1.0.0")
                         .contact(new Contact()
-                                .name("Larileonell")
-                                .email("seu@email.com")));
+                                .name("AllanaOliveira")
+                                .email("larissaleonel98@email.com")));
     }
 }
