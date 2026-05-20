@@ -25,17 +25,20 @@ public class BarbeiroService {
                     "Já existe um barbeiro cadastrado com o email: " + email);
         }
     }
+
     private Barbeiro buscarOuLancarExcecao(Long id) {
         return barbeiroRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Barbeiro não encontrado com id: " + id));
     }
+
     public BarbeiroResponse cadastrar(BarbeiroRequest request) {
         validarEmailDuplicado(request.getEmail());
         Barbeiro salvo = barbeiroRepository.save(
                 barbeiroMapper.toEntity(request));
         return barbeiroMapper.toResponse(salvo);
     }
+
     public List<BarbeiroResponse> listarAtivos() {
         return barbeiroRepository.findByAtivoTrue()
                 .stream()

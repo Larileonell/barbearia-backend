@@ -1,12 +1,13 @@
 package com.barbearia.backend.mapper;
 
+import com.barbearia.backend.dto.request.ClienteRequest;
 import com.barbearia.backend.dto.response.ClienteResponse;
 import com.barbearia.backend.model.Cliente;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ClienteMapper {
-    public Cliente toEntity(Cliente request) {
+    public Cliente toEntity(@org.checkerframework.checker.nullness.qual.MonotonicNonNull ClienteRequest request) {
         return Cliente.builder()
                 .nome(request.getNome())
                 .email(request.getEmail())
