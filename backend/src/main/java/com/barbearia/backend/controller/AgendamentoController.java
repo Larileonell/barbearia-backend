@@ -2,6 +2,7 @@ package com.barbearia.backend.controller;
 
 import com.barbearia.backend.dto.request.AgendamentoRequest;
 import com.barbearia.backend.dto.response.AgendamentoResponse;
+import com.barbearia.backend.model.StatusAgendamento;
 import com.barbearia.backend.service.AgendamentoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -97,5 +99,33 @@ public class AgendamentoController {
     public ResponseEntity<AgendamentoResponse> cancelar(
             @Parameter(description = "ID do agendamento") @PathVariable Long id) {
         return ResponseEntity.ok(agendamentoService.cancelar(id));
+    }
+    @GetMapping("/status/{status}")
+    @Operation(summary = "Listar agendamentos por status",
+            description = "Retorna agendamentos filtrados por status")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Status inválido")
+    })
+    public ResponseEntity<List<AgendamentoResponse>> listarPorStatus(
+            @Parameter(description = "Status do agendamento")
+            @PathVariable StatusAgendamento status) {
+        return ResponseEntity.ok(agendamentoService.listarPorStatus(status));
+    }
+
+    @GetMapping("/periodo")
+    @Operation(summary = "Listar agendamentos por período",
+            description = "Retorna agendamentos entre duas datas")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Período inválido")
+    })
+    public ResponseEntity<List<AgendamentoResponse>> listarPorPeriodo(
+            @Parameter(description = "Data início (yyyy-MM-dd)")
+            @RequestParam LocalDate dataInicio,
+            @Parameter(description = "Data fim (yyyy-MM-dd)")
+            @RequestParam LocalDate dataFim) {
+        return ResponseEntity.ok(
+                agendamentoService.listarPorPeriodo(dataInicio, dataFim));
     }
 }

@@ -13,6 +13,7 @@ import com.barbearia.backend.repository.ServicoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -151,6 +152,26 @@ public class AgendamentoService {
         agendamento.setStatus(StatusAgendamento.CANCELADO);
         return agendamentoMapper.toResponse(
                 agendamentoRepository.save(agendamento));
+    }
+    public List<AgendamentoResponse> listarPorStatus(StatusAgendamento status) {
+        return agendamentoRepository.findByStatus(status)
+                .stream()
+                .map(agendamentoMapper::toResponse)
+                .toList();
+    }
+
+    public List<AgendamentoResponse> listarPorPeriodo(
+            LocalDate dataInicio, LocalDate dataFim) {
+
+        if (dataInicio.isAfter(dataFim)) {
+            throw new RegraNegocioException(
+                    "Data início não pode ser maior que data fim");
+        }
+
+        return agendamentoRepository.findByDataBetween(dataInicio, dataFim)
+                .stream()
+                .map(agendamentoMapper::toResponse)
+                .toList();
     }
 }
 

@@ -5,6 +5,7 @@ import com.barbearia.backend.dto.response.ServicoResponse;
 import com.barbearia.backend.exception.ResourceNotFoundException;
 import com.barbearia.backend.mapper.ServicoMapper;
 import com.barbearia.backend.model.Servico;
+import com.barbearia.backend.model.TipoServico;
 import com.barbearia.backend.repository.ServicoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,12 @@ public class ServicoService {
         return servicoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Barbeiro não encontrado com id: " + id));
+    }
+    public List<ServicoResponse> listarPorTipo(TipoServico tipo) {
+        return servicoRepository.findByTipo(tipo)
+                .stream()
+                .map(servicoMapper::toResponse)
+                .toList();
     }
 
 }

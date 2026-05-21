@@ -2,8 +2,10 @@ package com.barbearia.backend.controller;
 
 import com.barbearia.backend.dto.request.ServicoRequest;
 import com.barbearia.backend.dto.response.ServicoResponse;
+import com.barbearia.backend.model.TipoServico;
 import com.barbearia.backend.service.ServicoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -55,6 +57,15 @@ public class ServicoController {
     public ResponseEntity<ServicoResponse> buscarPorId(
             @PathVariable Long id) {
         return ResponseEntity.ok(servicoService.buscarPorId(id));
+    }
+    @GetMapping("/tipo/{tipo}")
+    @Operation(summary = "Listar serviços por tipo",
+            description = "Retorna serviços filtrados por tipo")
+    @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+    public ResponseEntity<List<ServicoResponse>> listarPorTipo(
+            @Parameter(description = "Tipo do serviço")
+            @PathVariable TipoServico tipo) {
+        return ResponseEntity.ok(servicoService.listarPorTipo(tipo));
     }
 
 }
