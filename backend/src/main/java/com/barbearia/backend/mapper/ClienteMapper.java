@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ClienteMapper {
-    public Cliente toEntity(@org.checkerframework.checker.nullness.qual.MonotonicNonNull ClienteRequest request) {
+    public Cliente toEntity( ClienteRequest request) {
         return Cliente.builder()
                 .nome(request.getNome())
                 .email(request.getEmail())
@@ -21,7 +21,7 @@ public class ClienteMapper {
                 .nome(cliente.getNome())
                 .email(cliente.getEmail())
                 .endereco(cliente.getEndereco())
-                .criadoEm(cliente.getCreateEm())
+                .criadoEm(cliente.getCriadoEm())
                 .build();
     }
 }

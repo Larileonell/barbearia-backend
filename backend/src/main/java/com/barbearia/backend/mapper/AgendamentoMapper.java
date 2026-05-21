@@ -16,7 +16,7 @@ public class AgendamentoMapper {
                 .nomeCliente(agendamento.getCliente().getNome())
                 .nomeBarbeiro(agendamento.getBarbeiro().getNome())
                 .tipoServico(agendamento.getServico().getTipo().name())
-                .criadoEm(agendamento.getCreateEm().toString())
+                .criadoEm(agendamento.getCriadoEm().toString())
                 .build();
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BarbeiroMapper {
-    public Barbeiro toEntity(@org.checkerframework.checker.nullness.qual.MonotonicNonNull BarbeiroRequest request) {
+    public Barbeiro toEntity(BarbeiroRequest request) {
         return Barbeiro.builder()
                 .nome(request.getNome())
                 .email(request.getEmail())
@@ -24,7 +24,7 @@ public class BarbeiroMapper {
                 .telefone(barbeiro.getTelefone())
                 .especialidade(barbeiro.getEspecialidade())
                 .ativo(barbeiro.getAtivo())
-                .criadoEm(barbeiro.getCreateEm())
+                .criadoEm(barbeiro.getCriadoEm())
                 .build();
     }
 }

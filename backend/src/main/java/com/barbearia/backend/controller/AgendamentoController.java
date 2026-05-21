@@ -36,7 +36,7 @@ public class AgendamentoController {
             @RequestBody @Valid AgendamentoRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(agendamentoService.criar(request));
+                .body(agendamentoService.criarAgendamento(request));
     }
 
     @GetMapping

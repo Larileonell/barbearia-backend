@@ -112,7 +112,7 @@ public class AgendamentoService {
 
     public List<AgendamentoResponse> listarPorCliente(Long clienteId) {
         buscarCliente(clienteId);
-        return agendamentoRepository.findByClienteID(clienteId)
+        return agendamentoRepository.findByClienteId(clienteId)
                 .stream()
                 .map(agendamentoMapper::toResponse)
                 .toList();
@@ -120,7 +120,7 @@ public class AgendamentoService {
 
     public List<AgendamentoResponse> listarPorBarbeiro(Long barbeiroId) {
         buscarBarbeiro(barbeiroId);
-        return agendamentoRepository.findByBarbeiroIDAndData(
+        return agendamentoRepository.findByBarbeiroIdAndData(
                         barbeiroId, null)
                 .stream()
                 .map(agendamentoMapper::toResponse)
