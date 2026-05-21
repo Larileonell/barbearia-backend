@@ -8,9 +8,9 @@ import java.util.Optional;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente,Integer> {
-
+    // Utilizado na autenticação JWT - implementação futura
     Optional<Cliente> findByEmail(String email);
-
+    // Utilizado na autenticação JWT - implementação futura
     Optional<Cliente> findByCpf(String cpf);
 
     boolean existsByEmail(String email);

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface BarbeiroRepository extends JpaRepository<Barbeiro,Long> {
-
+    // Utilizado na autenticação JWT - implementação futura
     Optional<Barbeiro> findByEmail (String email);
     List<Barbeiro>  findByAtivoTrue();
     boolean existsByEmail(String email);
