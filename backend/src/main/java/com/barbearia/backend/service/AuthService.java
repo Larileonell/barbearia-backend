@@ -6,10 +6,11 @@ import com.barbearia.backend.model.Usuario;
 import com.barbearia.backend.repository.UsuarioRepository;
 import com.barbearia.backend.security.JwtService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -18,12 +19,21 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public LoginResponse login(LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getSenha()
-                )
-        );
+        log.info("Tentando autenticar usuário: {}", request.getEmail());
+
+
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getSenha()
+                    )
+            );
+            log.info("Autenticação bem sucedida!");
+        } catch (Exception e) {
+            log.error("Erro na autenticação: {}", e.getMessage());
+            throw e;
+        }
 
         Usuario usuario = usuarioRepository
                 .findByEmail(request.getEmail())
